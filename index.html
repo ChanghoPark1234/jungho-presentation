@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>정호그룹 클라우드 전략</title>
+    <title>정호그룹 클라우드 전략 실행계획</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -11,112 +11,326 @@
             min-height: 100vh; display: flex; justify-content: center; align-items: center;
         }
         .presentation-container {
-            width: 90vw; max-width: 1000px; height: 90vh; background: white;
+            width: 90vw; max-width: 1200px; height: 90vh; background: white;
             border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); overflow: hidden; position: relative;
         }
         .slide {
-            width: 100%; height: 100%; padding: 60px; display: none; flex-direction: column;
+            width: 100%; height: 100%; padding: 50px; display: none; flex-direction: column;
             justify-content: center; align-items: center; text-align: center; animation: slideIn 0.5s ease-in-out;
         }
         .slide.active { display: flex; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
         .slide h1 { font-size: 2.5em; color: #2c3e50; margin-bottom: 30px; font-weight: 700; }
-        .slide h2 { font-size: 2em; color: #34495e; margin-bottom: 30px; font-weight: 600; }
-        .slide p { font-size: 1.1em; line-height: 1.6; color: #2c3e50; margin-bottom: 20px; max-width: 800px; }
+        .slide h2 { font-size: 2em; color: #34495e; margin-bottom: 30px; font-weight: 600; border-bottom: 3px solid #3498db; padding-bottom: 15px; }
+        .slide h3 { font-size: 1.4em; color: #7f8c8d; margin-bottom: 20px; }
+        .slide p { font-size: 1.1em; line-height: 1.6; color: #2c3e50; margin-bottom: 15px; max-width: 900px; }
+        .slide ul { text-align: left; max-width: 800px; margin: 20px 0; }
+        .slide li { font-size: 1.2em; line-height: 1.6; color: #2c3e50; margin-bottom: 12px; padding-left: 20px; position: relative; }
+        .slide li::before { content: "▶"; color: #3498db; font-weight: bold; position: absolute; left: 0; }
+
+        /* 표지 슬라이드 */
         .slide-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-        .slide-1 h1 { color: white; font-size: 3em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .slide-1 .subtitle { color: #ecf0f1; font-size: 1.5em; margin: 20px 0 40px 0; }
+        .slide-1 h1 { color: white; font-size: 3.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .slide-1 .subtitle { color: #ecf0f1; font-size: 1.8em; margin: 20px 0 40px 0; }
         .slide-1 .author { color: #bdc3c7; background: rgba(255,255,255,0.1); padding: 20px 40px; border-radius: 25px; backdrop-filter: blur(10px); }
-        .highlight-box { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 15px; margin: 20px 0; font-size: 1.3em; font-weight: bold; max-width: 800px; }
+
+        /* 강조 박스 */
+        .highlight-box { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 15px; margin: 20px 0; font-size: 1.3em; font-weight: bold; max-width: 800px; }
+        .info-box { background: linear-gradient(145deg, #f8f9fa, #e9ecef); padding: 25px; border-radius: 15px; margin: 20px 0; box-shadow: 0 8px 16px rgba(0,0,0,0.1); max-width: 800px; }
+
+        /* 3단계 시각화 */
         .phases { display: flex; justify-content: space-between; gap: 20px; margin: 30px 0; flex-wrap: wrap; }
-        .phase { flex: 1; min-width: 200px; background: white; padding: 30px 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid #3498db; }
-        .phase h3 { color: #3498db; margin-bottom: 15px; font-size: 1.2em; }
-        .phase-number { background: #3498db; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin: 0 auto 15px; }
-        .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin: 30px 0; max-width: 800px; }
+        .phase { flex: 1; min-width: 250px; background: white; padding: 25px 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid #3498db; }
+        .phase h3 { color: #3498db; margin-bottom: 15px; font-size: 1.3em; }
+        .phase-number { background: #3498db; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin: 0 auto 15px; font-size: 1.4em; }
+
+        /* 지표 그리드 */
+        .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin: 30px 0; max-width: 800px; }
         .metric-item { text-align: center; padding: 25px; background: linear-gradient(145deg, #f8f9fa, #e9ecef); border-radius: 15px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
         .metric-number { font-size: 2.5em; font-weight: bold; color: #3498db; margin-bottom: 10px; }
         .metric-label { color: #2c3e50; font-weight: 600; }
+
+        /* 비교 테이블 */
+        .comparison-table { width: 100%; max-width: 800px; border-collapse: collapse; margin: 25px 0; box-shadow: 0 8px 16px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; }
+        .comparison-table th { background: linear-gradient(145deg, #34495e, #2c3e50); color: white; padding: 15px; font-size: 1.1em; }
+        .comparison-table td { padding: 15px; border-bottom: 1px solid #ecf0f1; font-size: 1em; }
+        .comparison-table tr:nth-child(even) td { background: #f8f9fa; }
+
+        /* 플로우 다이어그램 */
+        .flow-diagram { display: flex; align-items: center; justify-content: center; margin: 30px 0; flex-wrap: wrap; gap: 15px; }
+        .flow-box { background: linear-gradient(145deg, #3498db, #2980b9); color: white; padding: 15px 25px; border-radius: 12px; font-weight: bold; min-width: 120px; box-shadow: 0 6px 12px rgba(52, 152, 219, 0.3); }
+        .flow-arrow { font-size: 2em; color: #3498db; font-weight: bold; }
+
+        /* UI/UX 원칙 */
+        .principles-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 30px 0; max-width: 800px; }
+        .principle-item { background: linear-gradient(145deg, #e8f5e8, #c8e6c9); padding: 20px; border-radius: 15px; text-align: center; }
+        .principle-item h4 { color: #2e7d32; font-size: 1.3em; margin-bottom: 10px; }
+
+        /* 예산 차트 시뮬레이션 */
+        .budget-chart { display: flex; justify-content: center; align-items: end; height: 250px; margin: 30px 0; gap: 40px; }
+        .budget-bar { width: 80px; border-radius: 8px 8px 0 0; display: flex; align-items: end; justify-content: center; color: white; font-weight: bold; padding-bottom: 10px; position: relative; }
+        .budget-bar.phase1 { height: 20px; background: linear-gradient(to top, #95a5a6, #7f8c8d); }
+        .budget-bar.phase2 { height: 120px; background: linear-gradient(to top, #f39c12, #e67e22); }
+        .budget-bar.phase3 { height: 200px; background: linear-gradient(to top, #e74c3c, #c0392b); }
+        .budget-bar::after { content: attr(data-label); position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%); color: #2c3e50; font-size: 0.9em; white-space: nowrap; }
+
+        /* 네비게이션 */
         .navigation { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; }
         .nav-btn { padding: 12px 24px; background: linear-gradient(145deg, #3498db, #2980b9); color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); }
         .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4); }
         .nav-btn:disabled { background: linear-gradient(145deg, #bdc3c7, #95a5a6); cursor: not-allowed; transform: none; }
+
+        /* 슬라이드 카운터 */
         .slide-counter { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.7); color: white; padding: 8px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .slide { padding: 30px 20px; }
+            .slide h1 { font-size: 2em; }
+            .phases { flex-direction: column; }
+            .metrics-grid { grid-template-columns: 1fr; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
     </style>
 </head>
 <body>
     <div class="presentation-container">
-        <div class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">5</span></div>
+        <div class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">12</span></div>
 
         <!-- 슬라이드 1: 표지 -->
         <div class="slide slide-1 active">
-            <h1>정호그룹 클라우드 전략</h1>
-            <div class="subtitle">실행계획 요약</div>
-            <div class="author">전략실 브랜드커넥트팀<br>2025년 7월 8일</div>
+            <h1>정호그룹 클라우드 전략 실행계획</h1>
+            <div class="subtitle">리플렛 기반 실시간 브랜드 경험</div>
+            <div class="author">전략실 브랜드커넥트팀<br>2025년 7월</div>
         </div>
 
-        <!-- 슬라이드 2: 전략 개요 -->
+        <!-- 슬라이드 2: 도입 배경 -->
         <div class="slide slide-2">
-            <h2>전략 개요</h2>
-            <div class="highlight-box">센서 기반 리플렛 시스템 + 클라우드 플랫폼</div>
-            <p>고객과 브랜드 간 실시간 커뮤니케이션 강화를 위한 전략적 전환</p>
+            <h2>도입 배경</h2>
+            <ul>
+                <li>고객과 브랜드 간 실시간 연결 필요성 증대</li>
+                <li>기술적 인터페이스를 넘어서는 '경험 설계' 시도</li>
+                <li>리플렛 기반 반응형 메시지 전달 구조의 필요성</li>
+            </ul>
+            <div class="info-box">
+                <strong>현재 과제:</strong> 경쟁사 클라우드 도입 가속화 대비 정호그룹의 전략적 대응 필요
+            </div>
         </div>
 
-        <!-- 슬라이드 3: 3단계 실행계획 -->
+        <!-- 슬라이드 3: 핵심 가치 제안 -->
         <div class="slide slide-3">
-            <h2>3단계 실행계획</h2>
+            <h2>핵심 가치 제안</h2>
+            <div class="principles-grid">
+                <div class="principle-item">
+                    <h4>브랜드 메시지의 '명확성'</h4>
+                    <p>센서 기반 정확한 데이터로 메시지 전달</p>
+                </div>
+                <div class="principle-item">
+                    <h4>고객 경험의 '즉시성'</h4>
+                    <p>실시간 반응 시스템을 통한 즉각 응대</p>
+                </div>
+                <div class="principle-item">
+                    <h4>디지털-피지컬 통합</h4>
+                    <p>온라인과 오프라인 연결 경험 설계</p>
+                </div>
+                <div class="principle-item">
+                    <h4>브랜드 일관성 확보</h4>
+                    <p>전국 매장에서 통일된 경험 제공</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 슬라이드 4: 추진 로드맵 개요 -->
+        <div class="slide slide-4">
+            <h2>추진 로드맵 개요</h2>
             <div class="phases">
                 <div class="phase">
                     <div class="phase-number">1</div>
-                    <h3>진단 단계</h3>
-                    <p><strong>2025.09~10</strong></p>
-                    <p>IT환경 분석<br>요구사항 정의</p>
-                    <p><strong>예산: 0원</strong></p>
+                    <h3>진단 및 환경 분석</h3>
+                    <p><strong>기간:</strong> 2025.9~10</p>
+                    <p><strong>예산:</strong> 0원</p>
                 </div>
                 <div class="phase">
                     <div class="phase-number">2</div>
-                    <h3>시범 도입</h3>
-                    <p><strong>2026.06~07</strong></p>
-                    <p>센서 장비 적용<br>클라우드 구축</p>
-                    <p><strong>예산: 5,500만원</strong></p>
+                    <h3>시범 운영</h3>
+                    <p><strong>기간:</strong> 2026.6~7</p>
+                    <p><strong>예산:</strong> 5,500만원</p>
                 </div>
                 <div class="phase">
                     <div class="phase-number">3</div>
                     <h3>전면 확산</h3>
-                    <p><strong>2026.08~10</strong></p>
-                    <p>전국 매장 확산<br>유지보수 시스템</p>
-                    <p><strong>예산: 1억원</strong></p>
+                    <p><strong>기간:</strong> 2026.8~10</p>
+                    <p><strong>예산:</strong> 1억원</p>
                 </div>
+            </div>
+            <div class="highlight-box">총 기간: 1년 2개월 | 총 예산: 1억 5,500만원</div>
+        </div>
+
+        <!-- 슬라이드 5: 세부 실행계획 ① (진단) -->
+        <div class="slide slide-5">
+            <h2>1단계: 진단 및 환경 분석</h2>
+            <div class="info-box">
+                <h3>기간: 2025년 9월 ~ 10월 (2개월)</h3>
+            </div>
+            <ul>
+                <li>현장 IT 환경 조사 및 요구사항 분석</li>
+                <li>자체 인력 기반 기술 검토</li>
+                <li>기능 타당성 평가</li>
+                <li>콘텐츠 적용 기능 선별</li>
+            </ul>
+            <div class="highlight-box">예산: 0원 (내부 인력 활용)</div>
+        </div>
+
+        <!-- 슬라이드 6: 세부 실행계획 ② (시범 도입) -->
+        <div class="slide slide-6">
+            <h2>2단계: 시범 도입 및 테스트</h2>
+            <div class="info-box">
+                <h3>기간: 2026년 6월 ~ 7월 (2개월)</h3>
+            </div>
+            <ul>
+                <li>센서 장비 1~2개 사이트 적용</li>
+                <li>전력량 센서 자체개발 (2026.1~5)</li>
+                <li>클라우드 플랫폼 연결 및 콘텐츠 자동 생성</li>
+                <li>리플렛 모듈 테스트 운영</li>
+            </ul>
+            <div class="highlight-box">예산: 5,500만원</div>
+        </div>
+
+        <!-- 슬라이드 7: 세부 실행계획 ③ (전면 확산) -->
+        <div class="slide slide-7">
+            <h2>3단계: 전면 확산 및 통합 운영</h2>
+            <div class="info-box">
+                <h3>기간: 2026년 8월 ~ 10월 (3개월)</h3>
+            </div>
+            <ul>
+                <li>전국 매장 대상 멀티노드 클라우드 구조</li>
+                <li>유지보수 시스템 구축</li>
+                <li>센서 자동 진단 / 원격 업데이트</li>
+                <li>커뮤니케이션 모듈 연계로 브랜드 메시지 일관성 확보</li>
+            </ul>
+            <div class="highlight-box">예산: 1억원</div>
+        </div>
+
+        <!-- 슬라이드 8: 플랫폼 선정 기준 -->
+        <div class="slide slide-8">
+            <h2>클라우드 플랫폼 선정 기준</h2>
+            <table class="comparison-table">
+                <tr>
+                    <th>항목</th>
+                    <th>AWS</th>
+                    <th>Azure</th>
+                </tr>
+                <tr>
+                    <td><strong>요금 구조</strong></td>
+                    <td>유연 / 장기 계약 할인</td>
+                    <td>Microsoft 연계 혜택</td>
+                </tr>
+                <tr>
+                    <td><strong>IoT 연계</strong></td>
+                    <td>IoT Core, Greengrass</td>
+                    <td>IoT Hub, Event Grid</td>
+                </tr>
+                <tr>
+                    <td><strong>내부 시스템 연동</strong></td>
+                    <td>비교적 독립 구조</td>
+                    <td>MS 기반 환경과 통합성 우수</td>
+                </tr>
+            </table>
+            <div class="highlight-box">Azure를 1차 후보로 고려 (보안성과 조직 연동성 기준)</div>
+        </div>
+
+        <!-- 슬라이드 9: 고객 경험 흐름 -->
+        <div class="slide slide-9">
+            <h2>고객 경험 흐름도</h2>
+            <div class="flow-diagram">
+                <div class="flow-box">고객 진입</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">센서 인식</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">데이터 해석</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">리플렛 생성</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">고객 응대</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box">피드백 수집</div>
+            </div>
+            <div class="info-box">
+                <strong>핵심:</strong> 실시간 데이터 처리를 통한 즉시 반응 시스템 구현
             </div>
         </div>
 
-        <!-- 슬라이드 4: 핵심 지표 -->
-        <div class="slide slide-4">
-            <h2>핵심 지표</h2>
+        <!-- 슬라이드 10: UI/UX 설계 원칙 -->
+        <div class="slide slide-10">
+            <h2>UI/UX 설계 원칙</h2>
+            <div class="principles-grid">
+                <div class="principle-item">
+                    <h4>직관성</h4>
+                    <p>별도 학습 없이 이용 가능</p>
+                </div>
+                <div class="principle-item">
+                    <h4>반응성</h4>
+                    <p>3초 이내 리플렛 생성</p>
+                </div>
+                <div class="principle-item">
+                    <h4>일관성</h4>
+                    <p>모든 접점에서 동일한 경험</p>
+                </div>
+                <div class="principle-item">
+                    <h4>접근성</h4>
+                    <p>유니버설 디자인 적용</p>
+                </div>
+            </div>
+            <div class="info-box">
+                <strong>적용 영역:</strong> 매장 각 지점별 터치포인트 설계
+            </div>
+        </div>
+
+        <!-- 슬라이드 11: 예산 요약 -->
+        <div class="slide slide-11">
+            <h2>예산 요약 및 투자 효과</h2>
+            <div class="budget-chart">
+                <div class="budget-bar phase1" data-label="진단 0원"></div>
+                <div class="budget-bar phase2" data-label="시범 5,500만원"></div>
+                <div class="budget-bar phase3" data-label="확산 1억원"></div>
+            </div>
             <div class="metrics-grid">
                 <div class="metric-item">
-                    <div class="metric-number">14개월</div>
-                    <div class="metric-label">총 추진기간</div>
-                </div>
-                <div class="metric-item">
                     <div class="metric-number">1.55억</div>
-                    <div class="metric-label">총 예산</div>
+                    <div class="metric-label">총 투자 예산</div>
                 </div>
                 <div class="metric-item">
                     <div class="metric-number">12개월</div>
-                    <div class="metric-label">ROI 회수</div>
+                    <div class="metric-label">ROI 회수 예상</div>
                 </div>
                 <div class="metric-item">
                     <div class="metric-number">30%</div>
-                    <div class="metric-label">효율성 향상</div>
+                    <div class="metric-label">운영 효율성 향상</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-number">25%</div>
+                    <div class="metric-label">고객 만족도 증가</div>
                 </div>
             </div>
         </div>
 
-        <!-- 슬라이드 5: 마무리 -->
-        <div class="slide slide-5">
+        <!-- 슬라이드 12: 마무리 -->
+        <div class="slide slide-12">
             <h2>전략적 비전</h2>
-            <div class="highlight-box">"리플렛은 고객과 브랜드 사이의<br>실시간 메시지 인터페이스"</div>
-            <p style="margin-top: 40px; font-weight: 600;">전략실 브랜드커넥트팀<br>문의: chpark00@hanmail.net</p>
+            <div class="highlight-box">
+                "이 전략은 기술이 브랜드를 움직이게 하는 것이며,<br>
+                리플렛은 고객과 브랜드 사이의 '실시간 메시지 인터페이스'입니다."
+            </div>
+            <div class="info-box">
+                <strong>매장 • 고객 • 기술 • 브랜드</strong><br>
+                단일 흐름으로 연결하는 정호그룹의 전략적 실행 제안
+            </div>
+            <p style="margin-top: 40px; font-weight: 600;">
+                📧 전략실 브랜드커넥트팀<br>
+                문의: chpark00@hanmail.net<br>
+                다음 단계: 경영진 승인 후 세부 실행 계획 수립
+            </p>
         </div>
 
         <!-- 네비게이션 -->
@@ -128,7 +342,7 @@
 
     <script>
         let currentSlide = 1;
-        const totalSlides = 5;
+        const totalSlides = 12;
 
         function updateSlideCounter() {
             document.getElementById('current-slide').textContent = currentSlide;
@@ -151,11 +365,35 @@
             showSlide(currentSlide);
         }
 
+        // 키보드 네비게이션
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') changeSlide(1);
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                changeSlide(-1);
+            }
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                changeSlide(1);
+            }
+            if (e.key === 'Home') {
+                currentSlide = 1;
+                showSlide(currentSlide);
+            }
+            if (e.key === 'End') {
+                currentSlide = totalSlides;
+                showSlide(currentSlide);
+            }
         });
 
+        // 마우스 휠 네비게이션
+        document.addEventListener('wheel', function(e) {
+            if (e.deltaY > 0) {
+                changeSlide(1);
+            } else {
+                changeSlide(-1);
+            }
+            e.preventDefault();
+        });
+
+        // 초기 설정
         showSlide(1);
     </script>
 </body>
